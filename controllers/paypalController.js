@@ -11,17 +11,40 @@ const executePayment = (req,res)=>{
         body:{},
         json:true
     }, (err,respuesta)=>{
-        res.json({data:respuesta.body})
+        //almacenarla en la BD antes de ebviar la respuesta al frot
+        //res.json({data:respuesta.body})
+        const pago = {
+            id:respuesta.body.id,
+            nombre:respuesta.body.purchase_units[0].shipping.name.full_name,
+            moneda:respuesta.body.purchase_units[0].payments.captures[0].amount.currency_code,
+            monto:respuesta.body.purchase_units[0].payments.captures[0].amount.value,
+            correo:respuesta.body.payer.email_address
+        }
+        solicitud.post('http://localhost:8000/api/registrarPagoPayPal',{body:pago,
+        json:true},(err,resp)=>{
+            res.redirect('https://www.sandbox.paypal.com/')
+        })
     } )
 }
 
 const createPayment = (req,res)=>{
+    const {monto,codigo_moneda} = req.body;
+    if (monto<=0) {
+        res.json({data:req.body,
+            estado:false,
+            msg:"Monto No Valido"})
+    }
+    if (codigo_moneda == '') {
+        res.json({data:req.body,
+            estado:false,
+            msg:"Codigo Moneda No Valido"})
+    }
     const body = {
         intent:'CAPTURE',
         purchase_units:[{
             amount:{
-                currency_code:'USD',
-                value: '200'
+                currency_code:codigo_moneda,
+                value: monto
             }
         }],
         application_context: {
@@ -37,7 +60,10 @@ const createPayment = (req,res)=>{
         body,
         json: true
     },(err,respuesta)=>{
-        res.json({data:respuesta.body})
+        res.json({data:respuesta.body,
+            estado:true,
+            msg:"Puede Continuar con la transaccion"})
+       // res.json({data:respuesta.body})
     })
 }
 
