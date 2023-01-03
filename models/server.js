@@ -5,7 +5,6 @@ class Server {
     constructor(){
         this.app = express();
         this.port = process.env.PORT;
-        this.luxandPath = '/api/luxand';
         this.payplaPath='/api/paypal'
         //Middlewares
         this.middlewares();
@@ -39,7 +38,6 @@ class Server {
     }
 
     routes(){
-        this.app.use(this.luxandPath, require('../routes/luxand'));
         this.app.use(this.payplaPath, require('../routes/paypal'));
     }
 

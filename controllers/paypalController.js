@@ -67,9 +67,6 @@ const createPayment = (req,res)=>{
     })
 }
 
-
-
-
 const paypalGet = (req ,res) =>{
     const query = req.query;
     res.json({
