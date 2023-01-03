@@ -20,7 +20,7 @@ const executePayment = (req,res)=>{
             monto:respuesta.body.purchase_units[0].payments.captures[0].amount.value,
             correo:respuesta.body.payer.email_address
         }
-        solicitud.post('http://localhost:8000/api/registrarPagoPayPal',{body:pago,
+        solicitud.post('http://35.198.23.51:8080/api/registrarPagoPayPal',{body:pago,
         json:true},(err,resp)=>{
             res.redirect('https://www.sandbox.paypal.com/')
         })
@@ -39,6 +39,22 @@ const createPayment = (req,res)=>{
             estado:false,
             msg:"Codigo Moneda No Valido"})
     }
+    // const body = {
+    //     intent:'CAPTURE',
+    //     purchase_units:[{
+    //         amount:{
+    //             currency_code:codigo_moneda,
+    //             value: monto
+    //         }
+    //     }],
+    //     application_context: {
+    //         brand_name: `TusDonaciones.com`,
+    //         landing_page: 'NO_PREFERENCE',
+    //         user_action: 'PAY_NOW',
+    //         return_url: `http://localhost:8080/api/paypal/execute-payment`,
+    //         cancel_url: `http://localhost:8080/api/paypal/cancel-payment`,
+    //     }
+    // }
     const body = {
         intent:'CAPTURE',
         purchase_units:[{
@@ -51,8 +67,8 @@ const createPayment = (req,res)=>{
             brand_name: `TusDonaciones.com`,
             landing_page: 'NO_PREFERENCE',
             user_action: 'PAY_NOW',
-            return_url: `http://localhost:8080/api/paypal/execute-payment`,
-            cancel_url: `http://localhost:8080/api/paypal/cancel-payment`,
+            return_url: `http://35.198.23.51:8080/api/paypal/execute-payment`,
+            cancel_url: `http://35.198.23.51:8080/api/paypal/cancel-payment`,
         }
     }
     solicitud.post(`${process.env.PAYPAL_API}/v2/checkout/orders`,{
