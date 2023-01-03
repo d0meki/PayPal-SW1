@@ -15,13 +15,13 @@ class Server {
 
     middlewares(){
         //CORS
-          this.app.use(cors())
-        // const whiteList = ['http://localhost:4200','https://astounding-chebakia-00722d.netlify.app'];
-        // this.app.use(cors({
-        //     origin : whiteList
-        // }))
+        //  this.app.use(cors())
+        const whiteList = ['http://localhost:4200'];
+        this.app.use(cors({
+            origin : whiteList
+        }))
 
-        
+
         // const whiteList = ['http://localhost:4200'];
         // const corsOptions = {
         //     origin: function (origin, callback) {
