@@ -16,7 +16,7 @@ class Server {
     middlewares(){
         //CORS
         //  this.app.use(cors())
-        const whiteList = ['http://localhost:4200'];
+        const whiteList = ['http://localhost:4200','https://donaciones-app.netlify.app'];
         this.app.use(cors({
             origin : whiteList
         }))
